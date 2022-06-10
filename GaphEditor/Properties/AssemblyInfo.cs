@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанных со сборкой.
 [assembly: AssemblyTitle("GaphEditor")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Программа позволяет рисовать фигуры и сохранять их в файл")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("GaphEditor")]

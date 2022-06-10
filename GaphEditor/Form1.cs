@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 
 namespace GaphEditor
 {
@@ -15,7 +16,7 @@ namespace GaphEditor
         Bitmap pic;
         Dictionary<int, int> figures = new Dictionary<int, int>();
         
-        int x1, y1, countrect = 0, cr2 = 0, countsq = 0, cs2 = 0, countCircle = 0, cc2 = 0, selected = 0, fig, id, pfig = 0, pid = 0, count = 0;
+        int countrect = 0, cr2 = 0, countsq = 0, cs2 = 0, countCircle = 0, cc2 = 0, selected = 0, fig, id, pfig = 0, pid = 0, count = 0;
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -32,28 +33,65 @@ namespace GaphEditor
         }
 
         Color[] colors = new Color [5] { Color.Black, Color.Red, Color.Blue, Color.Green, Color.Yellow };
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+            if (e.Control)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.R: comboBox2.SelectedIndex = 1; break;
+                    case Keys.B: comboBox2.SelectedIndex = 2; break;
+                    case Keys.G: comboBox2.SelectedIndex = 3; break;
+                    case Keys.Y: comboBox2.SelectedIndex = 4; break;
+                    case Keys.D0: comboBox3.SelectedIndex = 0; break;
+                    case Keys.D1: if (comboBox3.Items.Count > 1) comboBox3.SelectedIndex = 1; else SystemSounds.Exclamation.Play(); break;
+                    case Keys.D2: if (comboBox3.Items.Count > 2) comboBox3.SelectedIndex = 2; else SystemSounds.Exclamation.Play(); break;
+                    case Keys.D3: if (comboBox3.Items.Count > 3) comboBox3.SelectedIndex = 3; else SystemSounds.Exclamation.Play(); break;
+                    case Keys.D4: if (comboBox3.Items.Count > 4) comboBox3.SelectedIndex = 4; else SystemSounds.Exclamation.Play(); break;
+                    case Keys.D5: if (comboBox3.Items.Count > 5) comboBox3.SelectedIndex = 5; else SystemSounds.Exclamation.Play(); break;
+                    case Keys.D6: if (comboBox3.Items.Count > 6) comboBox3.SelectedIndex = 6; else SystemSounds.Exclamation.Play(); break;
+                    case Keys.D7: if (comboBox3.Items.Count > 7) comboBox3.SelectedIndex = 7; else SystemSounds.Exclamation.Play(); break;
+                    case Keys.D8: if (comboBox3.Items.Count > 8) comboBox3.SelectedIndex = 8; else SystemSounds.Exclamation.Play(); break;
+                    case Keys.D9: if (comboBox3.Items.Count > 9) comboBox3.SelectedIndex = 9; else SystemSounds.Exclamation.Play(); break;
+
+                }
+            }
+        }
+
+        private void оПрограммеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox1 a = new AboutBox1();
+            a.Show();
+        }
+
         Triangle[] triangles;
         Square[] squares;
         Circle[] circles;
         public Form1()
         {
             InitializeComponent();
-            updateDraw();
-            
-            x1 = y1 = 0;
-            triangles = new Triangle[100];
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
+            this.KeyPreview = true;
+            this.MouseWheel += new MouseEventHandler(this_MouseWheel);
+            triangles = new Triangle[10000];
             triangles[0] = new Triangle();
-            squares = new Square[100];
+            squares = new Square[10000];
             squares[0] = new Square();
-            circles = new Circle[100];
+            circles = new Circle[10000];
             circles[0] = new Circle();
+        }
+
+        private void this_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (Control.ModifierKeys == Keys.Control) trackBar1.Value += e.Delta / 100;
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            //Point cord;
-            //cord.X = e.X;
-            //triangles[0].SetPoints(e);
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
@@ -75,7 +113,7 @@ namespace GaphEditor
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)//Здесь могла быть функция удаления фигуры...
         {
             Close();
             /*DialogResult dialogResult = MessageBox.Show("Вы уверены, что хотите удалить эту фигуру?", "", MessageBoxButtons.YesNo);
@@ -124,7 +162,6 @@ namespace GaphEditor
                 fig = a / 100;
                 id = a % 100;
                 comboBox1.Enabled = false;
-                //button1.Enabled = true;
                 switch (fig)
                 {
                     case 1:
@@ -161,7 +198,6 @@ namespace GaphEditor
             else
             {
                 comboBox1.Enabled = true;
-                //button1.Enabled = false;
                 comboBox2.SelectedIndex = 0;
                 trackBar1.Value = 50;
                 switch (fig)
@@ -221,17 +257,18 @@ namespace GaphEditor
                 Point cord = new Point(e.X, e.Y);
                 if (selected == 0)
                 {
+                    if (count == 0)
+                    {
+                        updateDraw();
+                    }
                     count++;
-                    
                     switch (comboBox1.SelectedIndex)
                     {
                         case 0:
                             cr2++;
-                            //triangles[countrect] = new Triangle();
                             triangles[countrect].SetColor(colors[comboBox2.SelectedIndex]);
                             triangles[countrect].SetSize(trackBar1.Value);
                             triangles[countrect].SetPoints(cord);
-                            //pictureBox1.Image = triangles[countrect].Draw(pic);
                             //добавляем в combobox
                             figures[comboBox3.Items.Count] = 100 + countrect;
                             comboBox3.Items.Add("Треугольник " + cr2.ToString());
@@ -289,20 +326,6 @@ namespace GaphEditor
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            //Pen p;
-            //p = new Pen(Color.Black);
-            //Graphics g = Graphics.FromImage(pic);
-            /*if (e.Button == MouseButtons.Left)
-            {
-                //g.DrawLine(p, x1, y1, e.X, e.Y);
-                Point cord = new Point(e.X, e.Y);
-                Triangle rect = new Triangle();
-                rect.SetPoints(cord);
-                pictureBox1.Image = rect.Draw(pic);
-
-            }*/
-            //x1 = e.X;
-            //y1 = e.Y;
             if(selected != 0 && e.Button == MouseButtons.Left)
             {
                 Point cord = new Point(e.X, e.Y);
@@ -323,21 +346,13 @@ namespace GaphEditor
 
         public async void updateDraw()//Асинхронный метод, который обновляет холст
         {
-            int a = 1;
             while (true)
             {
-                //Bitmap pic;
                 pic = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-                //picSave = pic;
                 using (Graphics grfx = Graphics.FromImage(pic))
                 {
-                    // Рисуем.
                     grfx.Clear(Color.White);
-                    //grfx.DrawPolygon(p, points);
-
                 }
-                //pictureBox1.Image = null;
-                //pictureBox1.CreateGraphics().Clear(Color.White);
                 for (int i = 0; i < countrect; i++)
                 {
                     pictureBox1.Image = triangles[i].Draw(pic);
@@ -350,8 +365,6 @@ namespace GaphEditor
                 {
                     pictureBox1.Image = circles[i].Draw(pic);
                 }
-                //textBox1.Text = a.ToString() + ":::" + countrect.ToString() + ":::" + comboBox3.SelectedIndex.ToString() + ":::" + countrect.ToString();
-                a++;
                 await Task.Delay(TimeSpan.FromMilliseconds(10));
             }
         }

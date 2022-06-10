@@ -15,11 +15,8 @@ namespace GaphEditor
             EditPoints();
             Pen p = new Pen(GetColor());
             p.Width = GetWidth();
-            //Pens p = new Pens(Color.Black);
             using (Graphics grfx = Graphics.FromImage(pic))
             {
-                // Рисуем.
-                //grfx.Clear(Color.White);
                 grfx.DrawPolygon(p, points);
 
             }

@@ -9,11 +9,10 @@ namespace GaphEditor
 {
     abstract class FigureClass
     {
-        //private Point[] points;
         private Point cords;
         private Color color = Color.Black;
         private int size = 50;
-        private int width = 2;
+        private int width = 3;
         public Point GetPoints()
         {
             return cords;
